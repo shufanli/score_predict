@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>复读适配性测试 - 结果</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 28px;
+            font-weight: 300;
+        }
+
+        .score-overview {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+            color: white;
+        }
+
+        .total-score {
+            font-size: 48px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .score-label {
+            font-size: 18px;
+            opacity: 0.9;
+        }
+
+        .sections-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .section-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .section-title {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .section-score {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        .section-percentage {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .result-analysis {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+
+        .analysis-title {
+            font-size: 20px;
+            color: #333;
+            margin-bottom: 20px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .analysis-content {
+            line-height: 1.8;
+            color: #555;
+            font-size: 16px;
+        }
+
+        .result-level {
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .level-high {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .level-medium {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+
+        .level-low {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .recommendations {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            border: 1px solid #e1e1e1;
+            margin-bottom: 30px;
+        }
+
+        .recommendations h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .recommendations ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .recommendations li {
+            padding: 8px 0;
+            color: #555;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .recommendations li:last-child {
+            border-bottom: none;
+        }
+
+        .recommendations li:before {
+            content: "•";
+            color: #667eea;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .actions {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin: 0 10px;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+        }
+
+        .progress-bar {
+            background: #e9ecef;
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.3s ease;
+        }
+
+        .no-results {
+            text-align: center;
+            color: #666;
+            font-size: 18px;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>复读适配性测试结果</h1>
+        
+        <div id="resultsContainer">
+            <!-- 结果将通过JavaScript动态加载 -->
+        </div>
+        
+        <div id="noResults" class="no-results" style="display: none;">
+            <p>未找到测试结果，请先完成测试。</p>
+            <a href="index.html" class="btn">重新开始测试</a>
+        </div>
+    </div>
+
+    <script>
+        // 页面加载时获取测试结果
+        document.addEventListener('DOMContentLoaded', function() {
+            const results = localStorage.getItem('testResults');
+            
+            if (!results) {
+                document.getElementById('noResults').style.display = 'block';
+                return;
+            }
+            
+            const data = JSON.parse(results);
+            displayResults(data);
+        });
+        
+        function displayResults(data) {
+            const { totalScore, sectionScores } = data;
+            
+            // 确定适配性级别
+            let level, levelClass, levelText, analysis, recommendations;
+            
+            if (totalScore >= 12) {
+                level = '适合复读';
+                levelClass = 'level-high';
+                levelText = '高适配性';
+                analysis = '恭喜！您的测试结果显示您非常适合复读。您具备良好的学习基础、心理抗压能力、方法规划能力和明确的目标动机。预计提分潜力较大，中等基础的同学可提高50-100分，基础薄弱的同学可提高100分以上。';
+                recommendations = [
+                    '制定详细的复读计划，包括长期目标和短期任务',
+                    '继续保持良好的学习习惯和心理状态',
+                    '重点关注薄弱科目，进行专项突破',
+                    '定期进行模拟考试，检验复习效果',
+                    '与老师和同学保持良好沟通，及时调整策略'
+                ];
+            } else if (totalScore >= 6) {
+                level = '需谨慎评估';
+                levelClass = 'level-medium';
+                levelText = '中等适配性';
+                analysis = '您的测试结果显示复读需要谨慎考虑。建议您先优化学习方法或进行心理调适，提高各维度能力后再决定是否复读。可以考虑寻求专业指导，制定更有针对性的提升计划。';
+                recommendations = [
+                    '分析薄弱环节，重点提升得分较低的维度',
+                    '寻求专业的学习指导和心理咨询',
+                    '制定更具体的学习计划和目标',
+                    '加强时间管理和压力调节能力',
+                    '考虑参加复读预备课程或辅导班'
+                ];
+            } else {
+                level = '复读风险较高';
+                levelClass = 'level-low';
+                levelText = '低适配性';
+                analysis = '测试结果显示您当前的复读适配性较低。可能因为动力不足、压力管理能力差或学习方法不当等原因导致复读效果有限。建议您慎重考虑复读决定，或者先进行较长时间的自我提升。';
+                recommendations = [
+                    '深入思考复读的真正动机和目标',
+                    '寻求专业的心理咨询和学习指导',
+                    '考虑其他升学途径或职业发展方向',
+                    '如果坚持复读，需要进行全面的能力提升',
+                    '建立更强的支持系统和监督机制'
+                ];
+            }
+            
+            // 各维度名称
+            const sectionNames = {
+                section1: '学习基础与潜力',
+                section2: '心理抗压能力',
+                section3: '方法与规划能力',
+                section4: '目标与动机'
+            };
+            
+            // 构建结果HTML
+            const resultsHTML = `
+                <div class="score-overview">
+                    <div class="total-score">${totalScore}/20</div>
+                    <div class="score-label">总分</div>
+                </div>
+                
+                <div class="sections-grid">
+                    ${Object.entries(sectionScores).map(([key, score]) => `
+                        <div class="section-card">
+                            <div class="section-title">${sectionNames[key]}</div>
+                            <div class="section-score">${score}/5</div>
+                            <div class="section-percentage">${(score/5*100).toFixed(0)}%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: ${score/5*100}%"></div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+                
+                <div class="result-analysis">
+                    <div class="analysis-title">
+                        <span class="result-level ${levelClass}">${levelText}</span>
+                        <br><strong>${level}</strong>
+                    </div>
+                    <div class="analysis-content">
+                        ${analysis}
+                    </div>
+                </div>
+                
+                <div class="recommendations">
+                    <h3>建议与指导</h3>
+                    <ul>
+                        ${recommendations.map(rec => `<li>${rec}</li>`).join('')}
+                    </ul>
+                </div>
+                
+                <div class="actions">
+                    <a href="index.html" class="btn">重新测试</a>
+                    <button onclick="window.print()" class="btn btn-secondary">打印结果</button>
+                </div>
+            `;
+            
+            document.getElementById('resultsContainer').innerHTML = resultsHTML;
+        }
+    </script>
+</body>
+</html> 
