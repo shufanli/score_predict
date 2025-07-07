@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>复读适配性测试 - 问卷</title>
+    <title>复读提分预测 - 问卷</title>
     <style>
         * {
             margin: 0;
@@ -162,7 +162,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>复读适配性测试</h1>
+        <h1>复读提分预测</h1>
         <div class="description">
             <strong>说明：</strong>每题选择最符合自己的选项，请诚实回答。测试结果将帮助您评估自己是否适合复读以及可能的提分空间。
         </div>
@@ -482,6 +482,36 @@
     </div>
 
     <script>
+        // 记录页面访问
+        async function recordPageVisit() {
+            try {
+                const response = await fetch('/api/visit', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        page_name: 'test.html'
+                    })
+                });
+                
+                if (response.ok) {
+                    const result = await response.json();
+                    console.log('访问记录成功:', result.message);
+                    console.log('总访问次数:', result.total_visits);
+                } else {
+                    console.warn('访问记录失败:', response.status);
+                }
+            } catch (error) {
+                console.error('记录访问时出错:', error);
+            }
+        }
+
+        // 页面加载时记录访问
+        document.addEventListener('DOMContentLoaded', function() {
+            recordPageVisit();
+        });
+
         // 进度条更新
         function updateProgress() {
             const totalQuestions = 20;
