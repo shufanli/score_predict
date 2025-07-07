@@ -255,7 +255,7 @@
             // 确定适配性级别
             let level, levelClass, levelText, analysis, recommendations;
             
-            if (totalScore >= 12) {
+            if (totalScore >= 70) {
                 level = '适合复读';
                 levelClass = 'level-high';
                 levelText = '高适配性';
@@ -267,7 +267,7 @@
                     '定期进行模拟考试，检验复习效果',
                     '与老师和同学保持良好沟通，及时调整策略'
                 ];
-            } else if (totalScore >= 6) {
+            } else if (totalScore >= 40) {
                 level = '需谨慎评估';
                 levelClass = 'level-medium';
                 levelText = '中等适配性';
@@ -304,22 +304,10 @@
             // 构建结果HTML
             const resultsHTML = `
                 <div class="score-overview">
-                    <div class="total-score">${totalScore}/20</div>
+                    <div class="total-score">${totalScore}</div>
                     <div class="score-label">总分</div>
                 </div>
                 
-                <div class="sections-grid">
-                    ${Object.entries(sectionScores).map(([key, score]) => `
-                        <div class="section-card">
-                            <div class="section-title">${sectionNames[key]}</div>
-                            <div class="section-score">${score}/5</div>
-                            <div class="section-percentage">${(score/5*100).toFixed(0)}%</div>
-                            <div class="progress-bar">
-                                <div class="progress-fill" style="width: ${score/5*100}%"></div>
-                            </div>
-                        </div>
-                    `).join('')}
-                </div>
                 
                 <div class="result-analysis">
                     <div class="analysis-title">
