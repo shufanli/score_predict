@@ -1,0 +1,1648 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>复读提分预测 - 问卷</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 28px;
+            font-weight: 300;
+        }
+
+        .description {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            line-height: 1.6;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+            font-weight: 600;
+        }
+
+        .question {
+            margin-bottom: 35px;
+            padding: 25px;
+            background: #fafbfc;
+            border-radius: 15px;
+            border: 1px solid #e6e8ea;
+        }
+
+        .question-text {
+            font-size: 17px;
+            color: #333;
+            margin-bottom: 25px;
+            font-weight: 500;
+            line-height: 1.6;
+            text-align: center;
+        }
+
+        .scale-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .scale-labels {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 500px;
+            font-size: 14px;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .scale-options {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            margin: 0 10px;
+        }
+
+        .scale-option {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .scale-option input[type="radio"] {
+            display: none;
+        }
+
+        .scale-circle {
+            border-radius: 50%;
+            border: 3px solid #d1d5db;
+            background: white;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        /* 圆圈大小渐变：两边大，中间小 */
+        .scale-option:nth-child(1) .scale-circle,
+        .scale-option:nth-child(7) .scale-circle {
+            width: 45px;
+            height: 45px;
+        }
+
+        .scale-option:nth-child(2) .scale-circle,
+        .scale-option:nth-child(6) .scale-circle {
+            width: 42px;
+            height: 42px;
+        }
+
+        .scale-option:nth-child(3) .scale-circle,
+        .scale-option:nth-child(5) .scale-circle {
+            width: 38px;
+            height: 38px;
+        }
+
+        .scale-option:nth-child(4) .scale-circle {
+            width: 35px;
+            height: 35px;
+        }
+
+        .scale-option:hover .scale-circle {
+            border-color: #667eea;
+            transform: scale(1.1);
+        }
+
+        .scale-option input[type="radio"]:checked + .scale-circle {
+            border-color: transparent;
+            transform: scale(1.1);
+        }
+
+        /* 七级渐变色 */
+        .scale-option:nth-child(1) input[type="radio"]:checked + .scale-circle {
+            background: linear-gradient(135deg, #10b981, #059669);
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+        }
+
+        .scale-option:nth-child(2) input[type="radio"]:checked + .scale-circle {
+            background: linear-gradient(135deg, #34d399, #10b981);
+            box-shadow: 0 4px 15px rgba(52, 211, 153, 0.4);
+        }
+
+        .scale-option:nth-child(3) input[type="radio"]:checked + .scale-circle {
+            background: linear-gradient(135deg, #6ee7b7, #34d399);
+            box-shadow: 0 4px 15px rgba(110, 231, 183, 0.4);
+        }
+
+        .scale-option:nth-child(4) input[type="radio"]:checked + .scale-circle {
+            background: linear-gradient(135deg, #d1d5db, #9ca3af);
+            box-shadow: 0 4px 15px rgba(156, 163, 175, 0.4);
+        }
+
+        .scale-option:nth-child(5) input[type="radio"]:checked + .scale-circle {
+            background: linear-gradient(135deg, #c084fc, #a855f7);
+            box-shadow: 0 4px 15px rgba(192, 132, 252, 0.4);
+        }
+
+        .scale-option:nth-child(6) input[type="radio"]:checked + .scale-circle {
+            background: linear-gradient(135deg, #a855f7, #9333ea);
+            box-shadow: 0 4px 15px rgba(168, 85, 247, 0.4);
+        }
+
+        .scale-option:nth-child(7) input[type="radio"]:checked + .scale-circle {
+            background: linear-gradient(135deg, #9333ea, #7c3aed);
+            box-shadow: 0 4px 15px rgba(147, 51, 234, 0.4);
+        }
+
+        .submit-section {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid #e1e1e1;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            font-weight: 600;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .error-message {
+            color: #e74c3c;
+            margin-top: 15px;
+            font-size: 14px;
+            display: none;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e1e1e1;
+            border-radius: 4px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            .scale-options {
+                gap: 6px;
+            }
+            
+            /* 移动端圆圈大小渐变 */
+            .scale-option:nth-child(1) .scale-circle,
+            .scale-option:nth-child(7) .scale-circle {
+                width: 38px;
+                height: 38px;
+            }
+
+            .scale-option:nth-child(2) .scale-circle,
+            .scale-option:nth-child(6) .scale-circle {
+                width: 35px;
+                height: 35px;
+            }
+
+            .scale-option:nth-child(3) .scale-circle,
+            .scale-option:nth-child(5) .scale-circle {
+                width: 32px;
+                height: 32px;
+            }
+
+            .scale-option:nth-child(4) .scale-circle {
+                width: 28px;
+                height: 28px;
+            }
+            
+            .scale-labels {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>复读提分预测</h1>
+        <div class="description">
+            <strong>说明：</strong>每题选择最符合自己的选项，记录对应字母（A/B）。测试后根据字母组合查看结果分析。共30题，分为四个维度：学习基础与潜力、心理抗压能力、方法与规划能力、目标与动机。
+        </div>
+        
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <form id="testForm">
+            <!-- 第一部分：学习基础与潜力 -->
+            <div class="section">
+                <h2 class="section-title">一、学习基础与潜力</h2>
+                
+                <div class="question">
+                    <div class="question-text">1. 你目前的高考成绩是（最小300；最大600，每档50）：</div>
+                    <div class="scale-container">
+                        <div class="scale-labels">
+                            <span>300分</span>
+                            <span>600分</span>
+                        </div>
+                        <div class="scale-options">
+                            <label class="scale-option">
+                                <input type="radio" name="q1" value="1" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q1" value="2" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q1" value="3" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q1" value="4" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q1" value="5" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q1" value="6" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q1" value="7" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-text">2. 对于薄弱的学科，你愿意投入时间专项突破</div>
+                    <div class="scale-container">
+                        <div class="scale-labels">
+                            <span>不同意</span>
+                            <span>同意</span>
+                        </div>
+                        <div class="scale-options">
+                            <label class="scale-option">
+                                <input type="radio" name="q2" value="1" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q2" value="2" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q2" value="3" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q2" value="4" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q2" value="5" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q2" value="6" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q2" value="7" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-text">3. 你过去的学习都很有计划，知道每天要干什么</div>
+                    <div class="scale-container">
+                        <div class="scale-labels">
+                            <span>不同意</span>
+                            <span>同意</span>
+                        </div>
+                        <div class="scale-options">
+                            <label class="scale-option">
+                                <input type="radio" name="q3" value="1" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q3" value="2" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q3" value="3" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q3" value="4" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q3" value="5" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q3" value="6" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q3" value="7" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-text">4. 你习惯用错题本/思维导图等工具深化理解</div>
+                    <div class="scale-container">
+                        <div class="scale-labels">
+                            <span>不同意</span>
+                            <span>同意</span>
+                        </div>
+                        <div class="scale-options">
+                            <label class="scale-option">
+                                <input type="radio" name="q4" value="1" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q4" value="2" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q4" value="3" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q4" value="4" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q4" value="5" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q4" value="6" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q4" value="7" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-text">5. 你认为自己还有很大的提分空间</div>
+                    <div class="scale-container">
+                        <div class="scale-labels">
+                            <span>不同意</span>
+                            <span>同意</span>
+                        </div>
+                        <div class="scale-options">
+                            <label class="scale-option">
+                                <input type="radio" name="q5" value="1" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q5" value="2" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q5" value="3" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q5" value="4" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q5" value="5" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q5" value="6" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q5" value="7" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-text">6. 你清楚自己上次高考各科具体失分点</div>
+                    <div class="scale-container">
+                        <div class="scale-labels">
+                            <span>不同意</span>
+                            <span>同意</span>
+                        </div>
+                        <div class="scale-options">
+                            <label class="scale-option">
+                                <input type="radio" name="q6" value="1" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q6" value="2" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q6" value="3" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q6" value="4" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q6" value="5" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q6" value="6" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q6" value="7" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-text">7. 发现知识漏洞时，你会系统性地重新学习而非简单刷题</div>
+                    <div class="scale-container">
+                        <div class="scale-labels">
+                            <span>不同意</span>
+                            <span>同意</span>
+                        </div>
+                        <div class="scale-options">
+                            <label class="scale-option">
+                                <input type="radio" name="q7" value="1" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q7" value="2" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q7" value="3" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q7" value="4" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q7" value="5" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q7" value="6" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q7" value="7" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-text">8. 遇到难题时，相比翻答案，你更倾向自己想办法求解</div>
+                    <div class="scale-container">
+                        <div class="scale-labels">
+                            <span>不同意</span>
+                            <span>同意</span>
+                        </div>
+                        <div class="scale-options">
+                            <label class="scale-option">
+                                <input type="radio" name="q8" value="1" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q8" value="2" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q8" value="3" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q8" value="4" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q8" value="5" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q8" value="6" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q8" value="7" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-text">9. 你认为错题本的价值高于单纯增加做题量</div>
+                    <div class="scale-container">
+                        <div class="scale-labels">
+                            <span>不同意</span>
+                            <span>同意</span>
+                        </div>
+                        <div class="scale-options">
+                            <label class="scale-option">
+                                <input type="radio" name="q9" value="1" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q9" value="2" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q9" value="3" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q9" value="4" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q9" value="5" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q9" value="6" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q9" value="7" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 第二部分：心理抗压能力 -->
+            <div class="section">
+                <h2 class="section-title">二、心理抗压能力</h2>
+                
+                <div class="question">
+                    <div class="question-text">10. 面对高考失利，你的第一反应是分析具体原因而非情绪崩溃</div>
+                    <div class="scale-container">
+                        <div class="scale-labels">
+                            <span>不同意</span>
+                            <span>同意</span>
+                        </div>
+                        <div class="scale-options">
+                            <label class="scale-option">
+                                <input type="radio" name="q10" value="1" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q10" value="2" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q10" value="3" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q10" value="4" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q10" value="5" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q10" value="6" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q10" value="7" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-text">11. 模考成绩波动时，你更关注薄弱科目而非总分排名</div>
+                    <div class="scale-container">
+                        <div class="scale-labels">
+                            <span>不同意</span>
+                            <span>同意</span>
+                        </div>
+                        <div class="scale-options">
+                            <label class="scale-option">
+                                <input type="radio" name="q11" value="1" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q11" value="2" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q11" value="3" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q11" value="4" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q11" value="5" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q11" value="6" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q11" value="7" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-text">12. 你能承受连续3次模考无进步的心理压力</div>
+                    <div class="scale-container">
+                        <div class="scale-labels">
+                            <span>不同意</span>
+                            <span>同意</span>
+                        </div>
+                        <div class="scale-options">
+                            <label class="scale-option">
+                                <input type="radio" name="q12" value="1" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q12" value="2" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q12" value="3" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q12" value="4" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q12" value="5" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q12" value="6" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q12" value="7" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-text">13. 你更倾向于想办法释放压力而非默默忍受</div>
+                    <div class="scale-container">
+                        <div class="scale-labels">
+                            <span>不同意</span>
+                            <span>同意</span>
+                        </div>
+                        <div class="scale-options">
+                            <label class="scale-option">
+                                <input type="radio" name="q13" value="1" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q13" value="2" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q13" value="3" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q13" value="4" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q13" value="5" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q13" value="6" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q13" value="7" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-text">14. 你相信通过科学的提分策略，复读成绩可突破原有天花板</div>
+                    <div class="scale-container">
+                        <div class="scale-labels">
+                            <span>不同意</span>
+                            <span>同意</span>
+                        </div>
+                        <div class="scale-options">
+                            <label class="scale-option">
+                                <input type="radio" name="q14" value="1" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q14" value="2" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q14" value="3" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q14" value="4" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q14" value="5" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q14" value="6" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q14" value="7" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-text">15. 你能接受复读期间被同龄人拉开人生进度的心理落差</div>
+                    <div class="scale-container">
+                        <div class="scale-labels">
+                            <span>不同意</span>
+                            <span>同意</span>
+                        </div>
+                        <div class="scale-options">
+                            <label class="scale-option">
+                                <input type="radio" name="q15" value="1" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q15" value="2" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q15" value="3" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q15" value="4" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q15" value="5" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q15" value="6" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q15" value="7" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-text">16. 你会因弄懂一个困扰已久的知识点而获得巨大成就感</div>
+                    <div class="scale-container">
+                        <div class="scale-labels">
+                            <span>不同意</span>
+                            <span>同意</span>
+                        </div>
+                        <div class="scale-options">
+                            <label class="scale-option">
+                                <input type="radio" name="q16" value="1" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q16" value="2" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q16" value="3" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q16" value="4" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q16" value="5" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q16" value="6" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q16" value="7" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-text">17. 你愿意放弃所有节假日进行冲刺复习</div>
+                    <div class="scale-container">
+                        <div class="scale-labels">
+                            <span>不同意</span>
+                            <span>同意</span>
+                        </div>
+                        <div class="scale-options">
+                            <label class="scale-option">
+                                <input type="radio" name="q17" value="1" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q17" value="2" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q17" value="3" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q17" value="4" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q17" value="5" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q17" value="6" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q17" value="7" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 第三部分：方法与规划能力 -->
+            <div class="section">
+                <h2 class="section-title">三、方法与规划能力</h2>
+                
+                <div class="question">
+                    <div class="question-text">18. 你相信复读的核心价值是重塑思维模式而非延长学习时间</div>
+                    <div class="scale-container">
+                        <div class="scale-labels">
+                            <span>不同意</span>
+                            <span>同意</span>
+                        </div>
+                        <div class="scale-options">
+                            <label class="scale-option">
+                                <input type="radio" name="q18" value="1" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q18" value="2" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q18" value="3" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q18" value="4" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q18" value="5" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q18" value="6" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q18" value="7" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-text">19. 你会为保持最佳状态严格管理饮食和睡眠时间</div>
+                    <div class="scale-container">
+                        <div class="scale-labels">
+                            <span>不同意</span>
+                            <span>同意</span>
+                        </div>
+                        <div class="scale-options">
+                            <label class="scale-option">
+                                <input type="radio" name="q19" value="1" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q19" value="2" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q19" value="3" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q19" value="4" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q19" value="5" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q19" value="6" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q19" value="7" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-text">20. 你已制定分阶段的提分目标（如每月提升10分）</div>
+                    <div class="scale-container">
+                        <div class="scale-labels">
+                            <span>不同意</span>
+                            <span>同意</span>
+                        </div>
+                        <div class="scale-options">
+                            <label class="scale-option">
+                                <input type="radio" name="q20" value="1" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q20" value="2" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q20" value="3" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q20" value="4" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q20" value="5" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q20" value="6" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q20" value="7" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-text">21. 你习惯将长期目标拆解为可量化的周/日任务清单</div>
+                    <div class="scale-container">
+                        <div class="scale-labels">
+                            <span>不同意</span>
+                            <span>同意</span>
+                        </div>
+                        <div class="scale-options">
+                            <label class="scale-option">
+                                <input type="radio" name="q21" value="1" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q21" value="2" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q21" value="3" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q21" value="4" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q21" value="5" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q21" value="6" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q21" value="7" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-text">22. 你认为反复推导课本基础公式比刷难题更重要</div>
+                    <div class="scale-container">
+                        <div class="scale-labels">
+                            <span>不同意</span>
+                            <span>同意</span>
+                        </div>
+                        <div class="scale-options">
+                            <label class="scale-option">
+                                <input type="radio" name="q22" value="1" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q22" value="2" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q22" value="3" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q22" value="4" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q22" value="5" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q22" value="6" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q22" value="7" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-text">23. 你认为语文古诗词默写得分必须拿满</div>
+                    <div class="scale-container">
+                        <div class="scale-labels">
+                            <span>不同意</span>
+                            <span>同意</span>
+                        </div>
+                        <div class="scale-options">
+                            <label class="scale-option">
+                                <input type="radio" name="q23" value="1" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q23" value="2" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q23" value="3" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q23" value="4" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q23" value="5" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q23" value="6" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q23" value="7" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 第四部分：目标与动机 -->
+            <div class="section">
+                <h2 class="section-title">四、目标与动机</h2>
+                
+                <div class="question">
+                    <div class="question-text">24. 你对复读的投入程度预期是比去年刻苦一倍以上</div>
+                    <div class="scale-container">
+                        <div class="scale-labels">
+                            <span>不同意</span>
+                            <span>同意</span>
+                        </div>
+                        <div class="scale-options">
+                            <label class="scale-option">
+                                <input type="radio" name="q24" value="1" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q24" value="2" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q24" value="3" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q24" value="4" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q24" value="5" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q24" value="6" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q24" value="7" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-text">25. 你对复读的预期是尽力而为，而不是必须提高xx分</div>
+                    <div class="scale-container">
+                        <div class="scale-labels">
+                            <span>不同意</span>
+                            <span>同意</span>
+                        </div>
+                        <div class="scale-options">
+                            <label class="scale-option">
+                                <input type="radio" name="q25" value="1" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q25" value="2" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q25" value="3" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q25" value="4" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q25" value="5" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q25" value="6" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q25" value="7" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-text">26. 如果复读成绩未达预期，你会认为复读仍有价值</div>
+                    <div class="scale-container">
+                        <div class="scale-labels">
+                            <span>不同意</span>
+                            <span>同意</span>
+                        </div>
+                        <div class="scale-options">
+                            <label class="scale-option">
+                                <input type="radio" name="q26" value="1" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q26" value="2" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q26" value="3" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q26" value="4" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q26" value="5" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q26" value="6" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q26" value="7" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-text">27. 你愿意为复读成功减少80%的娱乐社交时间</div>
+                    <div class="scale-container">
+                        <div class="scale-labels">
+                            <span>不同意</span>
+                            <span>同意</span>
+                        </div>
+                        <div class="scale-options">
+                            <label class="scale-option">
+                                <input type="radio" name="q27" value="1" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q27" value="2" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q27" value="3" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q27" value="4" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q27" value="5" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q27" value="6" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q27" value="7" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-text">28. 你认为复读是认知能力的全面升级而非简单重复</div>
+                    <div class="scale-container">
+                        <div class="scale-labels">
+                            <span>不同意</span>
+                            <span>同意</span>
+                        </div>
+                        <div class="scale-options">
+                            <label class="scale-option">
+                                <input type="radio" name="q28" value="1" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q28" value="2" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q28" value="3" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q28" value="4" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q28" value="5" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q28" value="6" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q28" value="7" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-text">29. 你确信自己复读的动机来自内在驱动力而非外界压力</div>
+                    <div class="scale-container">
+                        <div class="scale-labels">
+                            <span>不同意</span>
+                            <span>同意</span>
+                        </div>
+                        <div class="scale-options">
+                            <label class="scale-option">
+                                <input type="radio" name="q29" value="1" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q29" value="2" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q29" value="3" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q29" value="4" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q29" value="5" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q29" value="6" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q29" value="7" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-text">30. 总体而言，你认为自己非常适合复读并具备提分条件</div>
+                    <div class="scale-container">
+                        <div class="scale-labels">
+                            <span>不同意</span>
+                            <span>同意</span>
+                        </div>
+                        <div class="scale-options">
+                            <label class="scale-option">
+                                <input type="radio" name="q30" value="1" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q30" value="2" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q30" value="3" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q30" value="4" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q30" value="5" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q30" value="6" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                            <label class="scale-option">
+                                <input type="radio" name="q30" value="7" required>
+                                <div class="scale-circle"></div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="submit-section">
+                <button type="submit" class="btn" id="submitBtn">提交测试</button>
+                <div id="errorMessage" class="error-message">
+                    请完成所有题目后再提交
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // 记录页面访问
+        async function recordPageVisit() {
+            try {
+                const response = await fetch('/api/visit', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        page_name: 'test.html'
+                    })
+                });
+                
+                if (response.ok) {
+                    const result = await response.json();
+                    console.log('访问记录成功:', result.message);
+                    console.log('总访问次数:', result.total_visits);
+                } else {
+                    console.warn('访问记录失败:', response.status);
+                }
+            } catch (error) {
+                console.error('记录访问时出错:', error);
+            }
+        }
+
+        // 页面加载时记录访问
+        document.addEventListener('DOMContentLoaded', function() {
+            recordPageVisit();
+        });
+
+        // 进度条更新
+        function updateProgress() {
+            const totalQuestions = 30;
+            const answeredQuestions = document.querySelectorAll('input[type="radio"]:checked').length;
+            const progress = (answeredQuestions / totalQuestions) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        // 选项点击效果
+        document.querySelectorAll('.scale-option').forEach(option => {
+            option.addEventListener('click', function() {
+                const radio = this.querySelector('input[type="radio"]');
+                const name = radio.name;
+                
+                // 移除同组其他选项的选中状态
+                document.querySelectorAll(`input[name="${name}"]`).forEach(input => {
+                    input.closest('.scale-option').classList.remove('selected');
+                });
+                
+                // 添加当前选项的选中状态
+                this.classList.add('selected');
+                radio.checked = true;
+                
+                // 更新进度条
+                updateProgress();
+            });
+        });
+
+        // 表单提交
+        document.getElementById('testForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const answers = {};
+            
+            // 检查是否所有题目都已回答
+            let allAnswered = true;
+            for (let i = 1; i <= 30; i++) {
+                const answer = formData.get(`q${i}`);
+                if (!answer) {
+                    allAnswered = false;
+                    break;
+                }
+                answers[`q${i}`] = parseInt(answer);
+            }
+            
+            if (!allAnswered) {
+                document.getElementById('errorMessage').style.display = 'block';
+                return;
+            }
+            
+            // 计算分数 - 根据form.md的计分规则
+            let totalScore = 0;
+            let sectionScores = {
+                section1: 0, // 学习基础与潜力 (1-9题)
+                section2: 0, // 心理抗压能力 (10-17题)
+                section3: 0, // 方法与规划能力 (18-23题)
+                section4: 0  // 目标与动机 (24-30题)
+            };
+            
+            for (let i = 1; i <= 30; i++) {
+                const value = answers[`q${i}`];
+                let score = 0;
+                
+                if (i === 1) {
+                    // 第1题特殊计分规则
+                    const scoreMap = {1: 30, 2: 20, 3: 10, 4: 0, 5: -10, 6: -20, 7: -30};
+                    score = scoreMap[value];
+                } else {
+                    // 其他题目计分规则 (2-30题)
+                    const scoreMap = {1: -2, 2: -1, 3: 0, 4: 1, 5: 2, 6: 3, 7: 4};
+                    score = scoreMap[value];
+                }
+                
+                totalScore += score;
+                
+                // 计算各维度得分
+                if (i <= 9) sectionScores.section1 += score;
+                else if (i <= 17) sectionScores.section2 += score;
+                else if (i <= 23) sectionScores.section3 += score;
+                else sectionScores.section4 += score;
+            }
+            
+            // 保存结果到 localStorage
+            localStorage.setItem('testResults', JSON.stringify({
+                totalScore: totalScore,
+                sectionScores: sectionScores,
+                answers: answers
+            }));
+            
+            // 跳转到结果页面
+            window.location.href = 'result.html';
+        });
+    </script>
+</body>
+</html>
