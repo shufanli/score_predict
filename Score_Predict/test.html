@@ -120,29 +120,29 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 20px;
+            gap: 10px;
             width: 100%;
             max-width: 600px;
             margin: 0 auto;
+            padding: 0 10px;
         }
 
         .scale-label-left,
         .scale-label-right {
-            font-size: 16px;
+            font-size: 14px;
             color: #475569;
             font-weight: 500;
-            display: flex;
-            align-items: center;
-            height: 45px;
+            width: 42px;
+            text-align: center;
         }
 
         .scale-options {
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
-            gap: 12px;
-            margin: 0 10px;
-            height: 45px;
+            gap: 8px;
+            flex: 1;
+            max-width: 400px;
         }
 
         .scale-option {
@@ -356,69 +356,69 @@
         @media (max-width: 768px) {
             body {
                 padding: 8px;
-                font-size: var(--text-base-mobile);
             }
 
             .container {
                 padding: 15px;
                 margin: 0;
-                border-radius: 15px;
             }
 
             .question {
                 padding: 15px;
                 margin-bottom: 20px;
-                border-radius: 12px;
             }
 
             .question-text {
-                font-size: var(--question-text-mobile);
+                font-size: 14px;
                 margin-bottom: 15px;
-                padding: 0 5px;
+                line-height: 1.4;
             }
 
             .scale-container {
-                gap: 8px;
-                padding: 0;
-                margin: 0 -5px;
-                width: calc(100% + 10px);
+                padding: 0 5px;
+                gap: 5px;
             }
 
             .scale-label-left,
             .scale-label-right {
-                font-size: 13px;
-                min-width: 40px;
-                padding: 0 2px;
+                font-size: 12px;
+                width: 36px;
                 flex-shrink: 0;
+                writing-mode: unset;
+                transform: none;
             }
 
             .scale-options {
                 gap: 4px;
-                padding: 5px 0;
+                padding: 0;
             }
 
             /* 移动端圆圈大小调整 */
-            .scale-option:nth-child(1) .scale-circle,
-            .scale-option:nth-child(7) .scale-circle {
-                width: 30px;
-                height: 30px;
+            .scale-circle {
+                border-width: 1.5px;
             }
 
-            .scale-option:nth-child(2) .scale-circle,
-            .scale-option:nth-child(6) .scale-circle {
+            .scale-option:nth-child(1) .scale-circle,
+            .scale-option:nth-child(7) .scale-circle {
                 width: 28px;
                 height: 28px;
             }
 
-            .scale-option:nth-child(3) .scale-circle,
-            .scale-option:nth-child(5) .scale-circle {
+            .scale-option:nth-child(2) .scale-circle,
+            .scale-option:nth-child(6) .scale-circle {
                 width: 26px;
                 height: 26px;
             }
 
-            .scale-option:nth-child(4) .scale-circle {
+            .scale-option:nth-child(3) .scale-circle,
+            .scale-option:nth-child(5) .scale-circle {
                 width: 24px;
                 height: 24px;
+            }
+
+            .scale-option:nth-child(4) .scale-circle {
+                width: 22px;
+                height: 22px;
             }
         }
 
@@ -433,13 +433,13 @@
             }
 
             .scale-container {
-                gap: 4px;
+                gap: 3px;
             }
 
             .scale-label-left,
             .scale-label-right {
-                font-size: 12px;
-                min-width: 35px;
+                font-size: 11px;
+                width: 32px;
             }
 
             .scale-options {
@@ -448,25 +448,25 @@
 
             .scale-option:nth-child(1) .scale-circle,
             .scale-option:nth-child(7) .scale-circle {
-                width: 26px;
-                height: 26px;
-            }
-
-            .scale-option:nth-child(2) .scale-circle,
-            .scale-option:nth-child(6) .scale-circle {
                 width: 24px;
                 height: 24px;
             }
 
-            .scale-option:nth-child(3) .scale-circle,
-            .scale-option:nth-child(5) .scale-circle {
+            .scale-option:nth-child(2) .scale-circle,
+            .scale-option:nth-child(6) .scale-circle {
                 width: 22px;
                 height: 22px;
             }
 
-            .scale-option:nth-child(4) .scale-circle {
+            .scale-option:nth-child(3) .scale-circle,
+            .scale-option:nth-child(5) .scale-circle {
                 width: 20px;
                 height: 20px;
+            }
+
+            .scale-option:nth-child(4) .scale-circle {
+                width: 18px;
+                height: 18px;
             }
         }
     </style>
