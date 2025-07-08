@@ -5,6 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>复读提分预测</title>
     <style>
+        /* 基础样式变量 */
+        :root {
+            --h1-size-desktop: 28px;
+            --h1-size-mobile: 24px;
+            --text-base-desktop: 16px;
+            --text-base-mobile: 14px;
+            --container-padding-desktop: 40px;
+            --container-padding-mobile: 25px;
+            --input-padding-desktop: 14px 18px;
+            --input-padding-mobile: 12px 16px;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -19,6 +31,7 @@
             justify-content: center;
             align-items: center;
             padding: 20px;
+            font-size: var(--text-base-desktop);
         }
 
         .container {
@@ -26,7 +39,7 @@
             backdrop-filter: blur(10px);
             border-radius: 24px;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            padding: 40px;
+            padding: var(--container-padding-desktop);
             max-width: 440px;
             width: 90%;
             text-align: center;
@@ -49,7 +62,7 @@
         h1 {
             color: #1e293b;
             margin-bottom: 30px;
-            font-size: 28px;
+            font-size: var(--h1-size-desktop);
             font-weight: 600;
             position: relative;
             padding-bottom: 15px;
@@ -71,7 +84,7 @@
             color: #64748b;
             margin-bottom: 30px;
             line-height: 1.6;
-            font-size: 16px;
+            font-size: var(--text-base-desktop);
         }
 
         .input-group {
@@ -84,15 +97,15 @@
             margin-bottom: 10px;
             color: #475569;
             font-weight: 500;
-            font-size: 15px;
+            font-size: var(--text-base-desktop);
         }
 
         input[type="password"] {
             width: 100%;
-            padding: 14px 18px;
+            padding: var(--input-padding-desktop);
             border: 2px solid #e2e8f0;
             border-radius: 12px;
-            font-size: 16px;
+            font-size: var(--text-base-desktop);
             transition: all 0.3s ease;
             background: rgba(255, 255, 255, 0.9);
         }
@@ -107,9 +120,9 @@
             background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
             color: white;
             border: none;
-            padding: 14px 32px;
+            padding: var(--input-padding-desktop);
             border-radius: 12px;
-            font-size: 16px;
+            font-size: var(--text-base-desktop);
             font-weight: 500;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -141,7 +154,7 @@
         .error-message {
             color: #ef4444;
             margin-top: 12px;
-            font-size: 14px;
+            font-size: var(--text-base-mobile);
             display: none;
             animation: fadeIn 0.3s ease;
         }
@@ -149,6 +162,119 @@
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(-10px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 响应式布局调整 */
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+                font-size: var(--text-base-mobile);
+            }
+
+            .container {
+                padding: var(--container-padding-mobile);
+                border-radius: 20px;
+            }
+
+            h1 {
+                font-size: var(--h1-size-mobile);
+                margin-bottom: 25px;
+                padding-bottom: 12px;
+            }
+
+            .description {
+                font-size: var(--text-base-mobile);
+                margin-bottom: 25px;
+            }
+
+            label {
+                font-size: var(--text-base-mobile);
+                margin-bottom: 8px;
+            }
+
+            input[type="password"] {
+                padding: var(--input-padding-mobile);
+                font-size: var(--text-base-mobile);
+                border-radius: 10px;
+            }
+
+            .btn {
+                padding: var(--input-padding-mobile);
+                font-size: var(--text-base-mobile);
+                border-radius: 10px;
+            }
+
+            .error-message {
+                margin-top: 10px;
+                font-size: 13px;
+            }
+        }
+
+        /* 超小屏幕设备适配 */
+        @media (max-width: 360px) {
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                padding: 20px;
+                border-radius: 16px;
+            }
+
+            h1 {
+                font-size: 20px;
+                margin-bottom: 20px;
+            }
+
+            .container::before {
+                width: 80px;
+                height: 3px;
+            }
+
+            h1::after {
+                width: 50px;
+                height: 2px;
+            }
+
+            .description {
+                font-size: 13px;
+                margin-bottom: 20px;
+            }
+
+            .input-group {
+                margin-bottom: 20px;
+            }
+
+            input[type="password"],
+            .btn {
+                padding: 10px 14px;
+                font-size: 13px;
+            }
+        }
+
+        /* 横屏手机适配 */
+        @media (max-width: 768px) and (orientation: landscape) {
+            .container {
+                max-width: 500px;
+            }
+        }
+
+        /* 高分辨率屏幕适配 */
+        @media (min-width: 1920px) {
+            .container {
+                max-width: 500px;
+                padding: 50px;
+            }
+
+            h1 {
+                font-size: 32px;
+            }
+
+            .description,
+            input[type="password"],
+            .btn {
+                font-size: 18px;
+            }
         }
     </style>
 </head>

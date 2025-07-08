@@ -11,12 +11,23 @@
             box-sizing: border-box;
         }
 
+        /* 基础样式调整 */
+        :root {
+            --h1-size-desktop: 28px;
+            --h1-size-mobile: 22px;
+            --text-base-desktop: 16px;
+            --text-base-mobile: 14px;
+            --container-padding-desktop: 40px;
+            --container-padding-mobile: 20px;
+        }
+
         body {
             font-family: 'Arial', sans-serif;
             background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
             min-height: 100vh;
             padding: 20px;
             color: #1e293b;
+            font-size: var(--text-base-desktop);
         }
 
         .container {
@@ -25,7 +36,7 @@
             background: rgba(255, 255, 255, 0.9);
             border-radius: 20px;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-            padding: 40px;
+            padding: var(--container-padding-desktop);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.5);
         }
@@ -34,7 +45,7 @@
             text-align: center;
             color: #0f172a;
             margin-bottom: 30px;
-            font-size: 28px;
+            font-size: var(--h1-size-desktop);
             font-weight: 600;
             position: relative;
             padding-bottom: 15px;
@@ -168,7 +179,7 @@
         .analysis-content {
             line-height: 1.8;
             color: #475569;
-            font-size: 16px;
+            font-size: var(--text-base-desktop);
         }
 
         .result-level {
@@ -246,6 +257,7 @@
             border-bottom: 1px solid rgba(0,0,0,0.05);
             transition: transform 0.2s ease;
             cursor: pointer;
+            font-size: var(--text-base-desktop);
         }
 
         .recommendations li:hover {
@@ -322,28 +334,145 @@
             margin-top: 50px;
         }
 
+        /* 响应式布局调整 */
         @media (max-width: 768px) {
             body {
-                padding: 15px;
+                padding: 12px;
+                font-size: var(--text-base-mobile);
             }
 
             .container {
-                padding: 25px;
+                padding: var(--container-padding-mobile);
+                margin: 0 10px;
+            }
+
+            h1 {
+                font-size: var(--h1-size-mobile);
+                margin-bottom: 20px;
+            }
+
+            .score-overview {
+                padding: 20px;
+                margin-bottom: 25px;
             }
 
             .total-score {
-                font-size: 42px;
+                font-size: 36px;
+            }
+
+            .score-label {
+                font-size: 16px;
+            }
+
+            .result-analysis {
+                padding: 20px;
+                margin-bottom: 20px;
+            }
+
+            .analysis-title {
+                font-size: 18px;
+                margin-bottom: 15px;
+            }
+
+            .analysis-content {
+                font-size: var(--text-base-mobile);
+                line-height: 1.6;
+            }
+
+            .recommendations {
+                padding: 20px;
+            }
+
+            .recommendations h3 {
+                font-size: 16px;
+            }
+
+            .recommendations li {
+                font-size: var(--text-base-mobile);
+                padding: 10px 0;
+            }
+
+            .result-level {
+                padding: 6px 16px;
+                font-size: 14px;
             }
 
             .actions {
                 flex-direction: column;
                 gap: 10px;
+                margin-top: 20px;
             }
 
             .btn {
                 width: 100%;
                 max-width: 300px;
                 margin: 0 auto;
+                padding: 12px 24px;
+                font-size: 15px;
+            }
+        }
+
+        /* 平板设备适配 */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .container {
+                padding: 30px;
+                margin: 0 20px;
+            }
+
+            .total-score {
+                font-size: 42px;
+            }
+
+            .recommendations {
+                padding: 22px;
+            }
+
+            .btn {
+                padding: 13px 28px;
+            }
+        }
+
+        /* 横屏手机适配 */
+        @media (max-width: 768px) and (orientation: landscape) {
+            .container {
+                max-width: 600px;
+                margin: 0 auto;
+            }
+
+            .actions {
+                flex-direction: row;
+                justify-content: center;
+                gap: 15px;
+            }
+
+            .btn {
+                width: auto;
+                min-width: 140px;
+            }
+        }
+
+        /* 超小屏幕设备适配 */
+        @media (max-width: 360px) {
+            body {
+                padding: 8px;
+            }
+
+            .container {
+                padding: 15px;
+                margin: 0 5px;
+            }
+
+            h1 {
+                font-size: 20px;
+            }
+
+            .total-score {
+                font-size: 32px;
+            }
+
+            .btn {
+                padding: 10px 20px;
+                font-size: 14px;
             }
         }
     </style>
