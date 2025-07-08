@@ -1426,9 +1426,9 @@
                 </div>
 
                 <div class="question">
-                    <div class="question-text">30. 总体而言，你认为自己非常适合复读并具备提分条件</div>
+                    <div class="question-text">30. 本次高考成绩比平时模考低多少分</div>
                     <div class="scale-container">
-                        <div class="scale-label-left">不同意</div>
+                        <div class="scale-label-left">0分</div>
                         <div class="scale-options">
                             <label class="scale-option">
                                 <input type="radio" name="q30" value="1" required>
@@ -1459,7 +1459,7 @@
                                 <div class="scale-circle"></div>
                             </label>
                         </div>
-                        <div class="scale-label-right">同意</div>
+                        <div class="scale-label-right">60分</div>
                     </div>
                 </div>
             </div>
@@ -1571,6 +1571,10 @@
                 if (i === 1) {
                     // 第1题特殊计分规则
                     const scoreMap = {1: 30, 2: 20, 3: 10, 4: 0, 5: -10, 6: -20, 7: -30};
+                    score = scoreMap[value];
+                } else if (i === 30) {
+                    // 第30题特殊计分规则
+                    const scoreMap = {1: 0, 2: 10, 3: 20, 4: 30, 5: 40, 6: 50, 7: 60};
                     score = scoreMap[value];
                 } else {
                     // 其他题目计分规则 (2-30题)
