@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>基于AI大模型复读提分预测 - 问卷</title>
+    <title>基于AI大模型复读提分预测</title>
     <style>
         * {
             margin: 0;
@@ -330,10 +330,17 @@
 
         .error-message {
             color: #ef4444;
+            background-color: #fef2f2;
+            border: 1px solid #fecaca;
+            border-radius: 8px;
+            padding: 12px 16px;
             margin-top: 15px;
             font-size: 14px;
+            font-weight: 600;
+            text-align: center;
             display: none;
             animation: shake 0.5s ease-in-out;
+            box-shadow: 0 2px 8px rgba(239, 68, 68, 0.2);
         }
 
         @keyframes shake {
@@ -1682,7 +1689,7 @@
             <div class="submit-section">
                 <button type="submit" class="btn" id="submitBtn">提交测试</button>
                 <div id="errorMessage" class="error-message">
-                    请完成所有题目后再提交
+                    检测到有题目未完成
                 </div>
             </div>
         </form>
@@ -1744,14 +1751,21 @@
                 
                 // 更新进度条
                 updateProgress();
+                
+                // 隐藏错误提示（如果显示的话）
+                const errorElement = document.getElementById('errorMessage');
+                if (errorElement && errorElement.style.display === 'block') {
+                    errorElement.style.display = 'none';
+                }
             });
         });
 
-        // 表单提交
-        document.getElementById('testForm').addEventListener('submit', function(e) {
+        // 提交按钮点击事件
+        document.getElementById('submitBtn').addEventListener('click', function(e) {
             e.preventDefault();
             
-            const formData = new FormData(this);
+            const form = document.getElementById('testForm');
+            const formData = new FormData(form);
             const answers = {};
             
             // 检查是否所有题目都已回答
@@ -1766,7 +1780,13 @@
             }
             
             if (!allAnswered) {
-                document.getElementById('errorMessage').style.display = 'block';
+                const errorElement = document.getElementById('errorMessage');
+                if (errorElement) {
+                    errorElement.style.display = 'block';
+                    errorElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                } else {
+                    console.error('找不到错误提示元素');
+                }
                 return;
             }
             
