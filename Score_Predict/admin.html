@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>问卷数据统计 - 管理面板</title>
+    
+    <!-- Supabase JavaScript SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <!-- Supabase 配置文件 -->
+    <script src="supabase-config.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #1e293b;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #0f172a;
+            margin-bottom: 30px;
+            font-size: 28px;
+            font-weight: 600;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #64748b;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: bold;
+            color: #3b82f6;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #64748b;
+            font-size: 18px;
+        }
+
+        .error {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #ef4444;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            margin-top: 30px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        th {
+            background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        tr:hover {
+            background: #f8fafc;
+        }
+
+        .refresh-btn {
+            background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+
+        .refresh-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.4);
+        }
+
+        .score-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .score-high {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .score-medium {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .score-low {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .section-title {
+            font-size: 20px;
+            color: #0f172a;
+            margin: 30px 0 15px 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #3b82f6;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📊 问卷数据统计面板</h1>
+        
+        <button class="refresh-btn" onclick="loadStatistics()">🔄 刷新数据</button>
+        
+        <div id="content">
+            <div class="loading">正在加载数据...</div>
+        </div>
+    </div>
+
+    <script>
+        // 页面加载时自动加载数据
+        document.addEventListener('DOMContentLoaded', function() {
+            loadStatistics();
+        });
+
+        async function loadStatistics() {
+            const contentDiv = document.getElementById('content');
+            contentDiv.innerHTML = '<div class="loading">正在加载数据...</div>';
+
+            // 初始化 Supabase
+            if (!initSupabase()) {
+                contentDiv.innerHTML = `
+                    <div class="error">
+                        <strong>错误：</strong> Supabase 未配置或配置不正确。<br>
+                        请检查 supabase-config.js 文件中的配置。
+                    </div>
+                `;
+                return;
+            }
+
+            try {
+                // 获取所有数据
+                const { data: allData, error: allError } = await supabaseClient
+                    .from('survey_results')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+
+                if (allError) throw allError;
+
+                if (!allData || allData.length === 0) {
+                    contentDiv.innerHTML = '<div class="loading">暂无数据</div>';
+                    return;
+                }
+
+                // 计算统计数据
+                const totalCount = allData.length;
+                const avgScore = (allData.reduce((sum, item) => sum + parseFloat(item.total_score), 0) / totalCount).toFixed(2);
+                const maxScore = Math.max(...allData.map(item => parseFloat(item.total_score)));
+                const minScore = Math.min(...allData.map(item => parseFloat(item.total_score)));
+                
+                const avgSection1 = (allData.reduce((sum, item) => sum + parseFloat(item.section1_score), 0) / totalCount).toFixed(2);
+                const avgSection2 = (allData.reduce((sum, item) => sum + parseFloat(item.section2_score), 0) / totalCount).toFixed(2);
+                const avgSection3 = (allData.reduce((sum, item) => sum + parseFloat(item.section3_score), 0) / totalCount).toFixed(2);
+                const avgSection4 = (allData.reduce((sum, item) => sum + parseFloat(item.section4_score), 0) / totalCount).toFixed(2);
+
+                // 分类统计
+                const highScore = allData.filter(item => item.total_score >= 70).length;
+                const mediumScore = allData.filter(item => item.total_score >= 40 && item.total_score < 70).length;
+                const lowScore = allData.filter(item => item.total_score < 40).length;
+
+                // 生成 HTML
+                let html = `
+                    <div class="section-title">总体统计</div>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-label">总提交数</div>
+                            <div class="stat-value">${totalCount}</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">平均分</div>
+                            <div class="stat-value">${avgScore}</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">最高分</div>
+                            <div class="stat-value">${maxScore.toFixed(2)}</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">最低分</div>
+                            <div class="stat-value">${minScore.toFixed(2)}</div>
+                        </div>
+                    </div>
+
+                    <div class="section-title">各维度平均分</div>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-label">学习基础与潜力</div>
+                            <div class="stat-value">${avgSection1}</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">心理抗压能力</div>
+                            <div class="stat-value">${avgSection2}</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">方法与规划能力</div>
+                            <div class="stat-value">${avgSection3}</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">目标与动机</div>
+                            <div class="stat-value">${avgSection4}</div>
+                        </div>
+                    </div>
+
+                    <div class="section-title">分数段分布</div>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-label">高分段 (≥70分)</div>
+                            <div class="stat-value" style="color: #22c55e;">${highScore}</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">中等 (40-69分)</div>
+                            <div class="stat-value" style="color: #f59e0b;">${mediumScore}</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">低分段 (<40分)</div>
+                            <div class="stat-value" style="color: #ef4444;">${lowScore}</div>
+                        </div>
+                    </div>
+
+                    <div class="section-title">最近提交记录</div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>提交时间</th>
+                                    <th>总分</th>
+                                    <th>维度1</th>
+                                    <th>维度2</th>
+                                    <th>维度3</th>
+                                    <th>维度4</th>
+                                    <th>评级</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                `;
+
+                // 只显示最近 20 条记录
+                allData.slice(0, 20).forEach(item => {
+                    const score = parseFloat(item.total_score);
+                    let badgeClass = 'score-low';
+                    let rating = '需改进';
+                    
+                    if (score >= 70) {
+                        badgeClass = 'score-high';
+                        rating = '适合复读';
+                    } else if (score >= 40) {
+                        badgeClass = 'score-medium';
+                        rating = '谨慎评估';
+                    }
+
+                    const date = new Date(item.created_at).toLocaleString('zh-CN');
+                    
+                    html += `
+                        <tr>
+                            <td>${date}</td>
+                            <td><strong>${score.toFixed(2)}</strong></td>
+                            <td>${parseFloat(item.section1_score).toFixed(2)}</td>
+                            <td>${parseFloat(item.section2_score).toFixed(2)}</td>
+                            <td>${parseFloat(item.section3_score).toFixed(2)}</td>
+                            <td>${parseFloat(item.section4_score).toFixed(2)}</td>
+                            <td><span class="score-badge ${badgeClass}">${rating}</span></td>
+                        </tr>
+                    `;
+                });
+
+                html += `
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+
+                contentDiv.innerHTML = html;
+
+            } catch (error) {
+                console.error('加载数据失败:', error);
+                contentDiv.innerHTML = `
+                    <div class="error">
+                        <strong>错误：</strong> 加载数据失败<br>
+                        ${error.message}
+                    </div>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>

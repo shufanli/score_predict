@@ -1,0 +1,32 @@
+/* Dify 聊天助手样式定制 */
+
+/* 聊天按钮样式 */
+#dify-chatbot-bubble-button {
+    background-color: #1C64F2 !important;
+    box-shadow: 0 4px 12px rgba(28, 100, 242, 0.4) !important;
+    transition: all 0.3s ease !important;
+}
+
+#dify-chatbot-bubble-button:hover {
+    transform: scale(1.1) !important;
+    box-shadow: 0 6px 20px rgba(28, 100, 242, 0.6) !important;
+}
+
+/* 聊天窗口样式 */
+#dify-chatbot-bubble-window {
+    width: 24rem !important;
+    height: 40rem !important;
+    border-radius: 16px !important;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+    #dify-chatbot-bubble-window {
+        width: 100% !important;
+        height: 100% !important;
+        max-width: 100vw !important;
+        max-height: 100vh !important;
+        border-radius: 0 !important;
+    }
+}

@@ -4,6 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>基于AI大模型复读提分预测</title>
+    
+    <!-- Supabase JavaScript SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <!-- Supabase 配置文件 -->
+    <script src="supabase-config.js"></script>
+    
     <style>
         * {
             margin: 0;
@@ -1696,34 +1703,13 @@
     </div>
 
     <script>
-        // 记录页面访问
-        async function recordPageVisit() {
-            try {
-                const response = await fetch('/api/visit', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        page_name: 'test.html'
-                    })
-                });
-                
-                if (response.ok) {
-                    const result = await response.json();
-                    console.log('访问记录成功:', result.message);
-                    console.log('总访问次数:', result.total_visits);
-                } else {
-                    console.warn('访问记录失败:', response.status);
-                }
-            } catch (error) {
-                console.error('记录访问时出错:', error);
-            }
-        }
-
-        // 页面加载时记录访问
+        // 页面加载时初始化 Supabase
         document.addEventListener('DOMContentLoaded', function() {
-            recordPageVisit();
+            console.log('页面加载完成');
+            // 初始化 Supabase 客户端
+            if (typeof initSupabase === 'function') {
+                initSupabase();
+            }
         });
 
         // 进度条更新
@@ -1826,14 +1812,28 @@
                 else sectionScores.section4 += score;
             }
             
-            // 保存结果到 localStorage
-            localStorage.setItem('testResults', JSON.stringify({
+            // 准备数据
+            const resultsData = {
                 totalScore: totalScore,
                 sectionScores: sectionScores,
                 answers: answers
-            }));
+            };
             
-            // 跳转到结果页面
+            // 保存结果到 localStorage
+            localStorage.setItem('testResults', JSON.stringify(resultsData));
+            
+            // 尝试提交到 Supabase（异步，不阻塞页面跳转）
+            submitToSupabase(resultsData).then(result => {
+                if (result.success) {
+                    console.log('✅ 数据已成功保存到 Supabase');
+                } else {
+                    console.warn('⚠️ 数据保存到 Supabase 失败，但已保存到本地:', result.error);
+                }
+            }).catch(err => {
+                console.error('❌ 提交数据时发生错误:', err);
+            });
+            
+            // 立即跳转到结果页面（不等待 Supabase 响应）
             window.location.href = 'result.html';
         });
 
